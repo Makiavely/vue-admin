@@ -1,29 +1,58 @@
 <template>
-  <form class="form-signin">
+  <!-- <form class="form-signin" @submit="submit"> -->
+    <form class="form-signin" @submit.prevent="submit">
     <h1 class="h3 mb-3 fw-normal">Please register</h1>
 
       <label for="first_name" class="sr-only">First Name</label>
-      <input type="text" id="first_name" class="form-control" placeholder="First Name" required>
+      <input type="text" id="first_name" class="form-control" placeholder="First Name" required v-model="firstName">
 
       <label for="last_name" class="sr-only">Last Name</label>
-      <input type="text" id="last_name" class="form-control" placeholder="Last Name" required>
+      <input type="text" id="last_name" class="form-control" placeholder="Last Name" required v-model="lastName">
 
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required>
+      <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required v-model="email">
 
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="text" id="inputPassword" class="form-control" placeholder="Password" required>
+      <input type="text" id="inputPassword" class="form-control" placeholder="Password" required v-model="password">
 
       <label for="passwordConfirm" class="sr-only">Password Confirm</label>
-      <input type="text" id="passwordConfirm" class="form-control" placeholder="Password Confirm" required>
+      <input type="text" id="passwordConfirm" class="form-control" placeholder="Password Confirm" required v-model="passwordConfirm">
 
     <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
   </form>
 </template>
 
 <script>
-  export default {
-    name: "Register"    
+import {ref} from 'vue';
+
+  export default {    
+    name: "Register",
+    setup() {
+      const firstName = ref('');
+      const lastName = ref('');
+      const email = ref('');
+      const password = ref('');
+      const passwordConfirm = ref('');
+
+      const submit = () => {
+        console.log({
+          first_name: firstName.value,
+          last_name: lastName.value,
+          email: email.value,
+          password: password.value,
+          password_confirm: passwordConfirm.value,
+        })
+      }
+
+      return {
+        firstName: firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+        submit
+      }
+    }
  }
 </script>
 
