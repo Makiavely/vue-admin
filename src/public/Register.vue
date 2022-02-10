@@ -38,24 +38,24 @@ export default {
     const passwordConfirm = ref('');
     const router = useRouter();
 
-    /*     const submit = () => {
-           axios.post('http://localhost:8000/api/register',{
-             first_name: firstName.value,
-             last_name: lastName.value,
-             email: email.value,
-             password: password.value,
-             password_confirm: passwordConfirm.value,
-           }).then(
-             res => {
-               console.log(res)
-             }
-           )
-         }*/
+    /*    const submit = () => {
+          axios.post('http://localhost:8000/api/register', {
+            first_name: firstName.value,
+            last_name: lastName.value,
+            email: email.value,
+            password: password.value,
+            password_confirm: passwordConfirm.value,
+          }).then(
+              res => {
+                console.log(res)
+              }
+          )
+        }*/
 
 
     const submit = async () => {
-      /*const response = await axios.post('http://localhost:8000/api/register',{*/
-      await axios.post('http://localhost:8000/api/register', {
+      /*await axios.post('http://localhost:8000/api/register', {*/
+      await axios.post('register', {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value,
@@ -63,7 +63,7 @@ export default {
         password_confirm: passwordConfirm.value,
       });
 
-      /* console.log(response);*/
+       /*console.log(response);*/
       await router.push('/login');
     }
 
