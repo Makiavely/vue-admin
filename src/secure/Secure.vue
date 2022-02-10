@@ -7,7 +7,7 @@
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-      <h2>Section title</h2>
+<!--      <h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
@@ -29,23 +29,35 @@
             </tr>           
           </tbody>
         </table>
-      </div>
+      </div>-->
+
+      <router-view />
+
     </main>
   </div>
 </div>
 </template>
 
 <script>
+import {onMounted} from "vue";
 import Menu from "@/components/Menu.vue";
 import Nav from "@/components/Nav.vue";
+import axios from "axios";
 
-  export default {
-    name: "Secure",
-    components: {
+export default {
+  name: "Secure",
+  components: {
     Menu,
     Nav
+  },
+  setup() {
+    onMounted(async () => {
+      const response = await axios.get('user');
+
+      console.log(response)
+    });
   }
- }
+}
 </script>
 
 
