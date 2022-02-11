@@ -26,15 +26,15 @@ export default {
     const router = useRouter();
 
     const submit = async () => {
-      /*const response = await axios.post('http://localhost:8000/api/login', {*/
       const response = await axios.post('login', {
         email: email.value,
         password: password.value,
       });
 
       localStorage.setItem('token', response.data.token);
+      /*axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;*/
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
-      /*console.log(response);*/
       await router.push('/');
     }
     return {
