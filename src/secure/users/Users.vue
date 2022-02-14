@@ -1,5 +1,9 @@
 <template>
-  <!--  <h2>Section title</h2>-->
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <router-link to="/users/create" class="btn btn-sm btn-outline-secondary">Add</router-link>
+    </div>
+  </div>
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
@@ -43,7 +47,6 @@
 <script lang="ts">
 import {ref, onMounted} from 'vue';
 import axios from "axios";
-/*import {User} from "@/classes/user";*/
 import {Entity} from "@/interfaces/entity";
 
 export default {
@@ -78,8 +81,6 @@ export default {
       if (confirm('Are you sure you want to delete this record?')) {
         await axios.delete(`users/${id}`);
 
-        /*users.value = users.value.filter((u: { id: number }) => u.id !== id);*/
-        /*users.value = users.value.filter((u: User) => u.id !== id);*/
         users.value = users.value.filter((e: Entity) => e.id !== id);
       }
     }
