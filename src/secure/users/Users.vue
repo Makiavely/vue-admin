@@ -43,6 +43,8 @@
 <script lang="ts">
 import {ref, onMounted} from 'vue';
 import axios from "axios";
+/*import {User} from "@/classes/user";*/
+import {Entity} from "@/interfaces/entity";
 
 export default {
   name: "Users",
@@ -76,7 +78,9 @@ export default {
       if (confirm('Are you sure you want to delete this record?')) {
         await axios.delete(`users/${id}`);
 
-        users.value = users.value.filter((u: { id: number }) => u.id !== id);
+        /*users.value = users.value.filter((u: { id: number }) => u.id !== id);*/
+        /*users.value = users.value.filter((u: User) => u.id !== id);*/
+        users.value = users.value.filter((e: Entity) => e.id !== id);
       }
     }
 
