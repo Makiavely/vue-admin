@@ -44,23 +44,27 @@ export default {
   setup() {
     const users = ref([]);
     const page = ref(1);
+    const lastPage = ref(0);
 
     const load = async () => {
       const response = await axios.get(`users?page=${page.value}`);
 
-      /*console.log(page.value);*/
-
       users.value = response.data.data;
+      lastPage.value = response.data.meta.last_page;
     }
 
     onMounted(load);
 
     const next = async () => {
+      if (page.value === lastPage.value) return;
+
       page.value++;
       await load();
     }
 
     const prev = async () => {
+      if (page.value === 1) return;
+
       page.value--;
       await load();
     }
