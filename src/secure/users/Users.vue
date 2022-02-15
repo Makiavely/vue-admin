@@ -58,7 +58,7 @@ export default {
     const lastPage = ref(0);
 
     const load = async () => {
-      const response = await axios.get(`users?page=${page.value}`);
+      const response = await axios.get<any>(`users?page=${page.value}`);
 
       users.value = response.data.data;
       lastPage.value = response.data.meta.last_page;

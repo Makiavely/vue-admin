@@ -45,11 +45,11 @@ export default {
     const {params} = useRoute();
 
     onMounted(async () => {
-      const response = await axios.get('roles');
+      const response = await axios.get<any>('roles');
 
       roles.value = response.data.data;
 
-      const userCall = await axios.get(`users/${params.id}`);
+      const userCall = await axios.get<any>(`users/${params.id}`);
 
       const user: User = userCall.data.data;
 

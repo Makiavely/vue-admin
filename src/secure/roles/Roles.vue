@@ -35,7 +35,7 @@ export default {
     const roles = ref([]);
 
     onMounted(async () => {
-      const response = await axios.get('roles');
+      const response = await axios.get<any>('roles');
 
       roles.value = response.data.data;
       //console.log(roles.value)
