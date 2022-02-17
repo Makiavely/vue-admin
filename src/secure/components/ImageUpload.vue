@@ -1,6 +1,5 @@
 <template>
   <label class="btn btn-primary">
-<!--    Upload <input type="file" hidden @change="change($event.target.files)"/>-->
     Upload <input type="file" hidden @change="upload($event.target.files)"/>
   </label>
 </template>
@@ -12,7 +11,6 @@ export default {
   name: "ImageUpload",
   emits: ['file-uploaded'],
   setup(_, context) {
-    //const change = async (files: FileList) => {
     const upload = async (files) => {
       const file = files.item(0);
 
@@ -21,7 +19,6 @@ export default {
 
       const response = await axios.post('upload', data);
 
-      /*image.value = response.data.url;*/
       context.emit('file-uploaded', response.data.url);
     }
     return {
