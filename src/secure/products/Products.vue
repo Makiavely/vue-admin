@@ -30,7 +30,7 @@
     </table>
   </div>
 
-  <nav>
+<!--  <nav>
     <ul class="pagination">
       <li class="page-item">
         <a class="page-link" href="javascript:void(0)" @click="prev">Previous</a>
@@ -39,19 +39,22 @@
         <a class="page-link" href="javascript:void(0)" @click="next">Next</a>
       </li>
     </ul>
-  </nav>
+  </nav>-->
+  <Paginator :last-page="lastPage" @page-changed="load($event)"/>
 </template>
 
 <script lang="ts">
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import {Entity} from "@/interfaces/entity";
+import Paginator from "@/secure/components/Paginator.vue"
 
 export default {
   name: "Products",
+  components: {Paginator},
   setup() {
     const products = ref([]);
-    const page = ref(1);
+    /*const page = ref(1);*/
     const lastPage = ref(0);
 
     /*    onMounted(async () => {
@@ -60,15 +63,16 @@ export default {
           products.value = response.data.data;
         });*/
 
-    const load = async () => {
-      const response = await axios.get<any>(`products?page=${page.value}`);
+    const load = async (page = 1) => {
+      const response = await axios.get<any>(`products?page=${page}`);
 
       products.value = response.data.data;
+      lastPage.value = response.data.meta.last_page;
     }
 
     onMounted(load);
 
-    const next = async () => {
+/*    const next = async () => {
       if (page.value === lastPage.value) return;
 
       page.value++;
@@ -80,7 +84,7 @@ export default {
 
       page.value--;
       await load();
-    }
+    }*/
 
     const del = async (id: number) => {
       if (confirm('Are you sure you want to delete this record?')) {
@@ -92,9 +96,11 @@ export default {
 
     return {
       products,
+      lastPage,
       del,
-      next,
-      prev
+      /*next,
+      prev*/
+      load,
     }
   }
 }

@@ -20,12 +20,15 @@ export default {
   props: {
     lastPage: Number
   },
+
   /*setup() {*/
   /*setup(props, context) {*/
+
   setup(props, {emit}) {
     const page = ref(1);
 
     const next = async () => {
+
       /*if (page.value === lastPage.value) return;*/
       if (page.value === props.lastPage) return;
 
@@ -41,7 +44,11 @@ export default {
       page.value--;
       /*await load();*/
       emit('page-changed', page.value);
+    }
 
+    return {
+      next,
+      prev
     }
   }
 }
