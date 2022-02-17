@@ -29,6 +29,17 @@
       </tbody>
     </table>
   </div>
+
+  <nav>
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="javascript:void(0)" @click="prev">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="javascript:void(0)" @click="next">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script lang="ts">
@@ -40,12 +51,36 @@ export default {
   name: "Products",
   setup() {
     const products = ref([]);
+    const page = ref(1);
+    const lastPage = ref(0);
 
-    onMounted(async () => {
-      const response = await axios.get<any>('products');
+    /*    onMounted(async () => {
+          const response = await axios.get<any>('products');
+
+          products.value = response.data.data;
+        });*/
+
+    const load = async () => {
+      const response = await axios.get<any>(`products?page=${page.value}`);
 
       products.value = response.data.data;
-    });
+    }
+
+    onMounted(load);
+
+    const next = async () => {
+      if (page.value === lastPage.value) return;
+
+      page.value++;
+      await load();
+    }
+
+    const prev = async () => {
+      if (page.value === 1) return;
+
+      page.value--;
+      await load();
+    }
 
     const del = async (id: number) => {
       if (confirm('Are you sure you want to delete this record?')) {
@@ -58,6 +93,8 @@ export default {
     return {
       products,
       del,
+      next,
+      prev
     }
   }
 }
