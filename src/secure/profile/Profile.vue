@@ -51,11 +51,14 @@ export default {
     const store = useStore();
 
     onMounted(async () => {
-      const user = computed(() => store.state.user);
+      /*const user = computed(() => store.state.user);*/
+      const user = computed(() => store.state.User.user);
 
       firstName.value = user.value.first_name;
       lastName.value = user.value.last_name;
       email.value = user.value.email;
+
+      console.log(user.value.first_name);
     });
 
     const submitInfo = async () => {
@@ -66,7 +69,8 @@ export default {
         email: email.value
       });
 
-      await store.dispatch('setUser', response.data);
+      /*await store.dispatch('setUser', response.data);*/
+      await store.dispatch('User/setUser', response.data);
     }
 
     const submitPassword = async () => {

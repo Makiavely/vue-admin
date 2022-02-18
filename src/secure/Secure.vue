@@ -1,5 +1,4 @@
 <template>
-  <!--  <Nav :user="user"/>-->
   <Nav />
 
   <div class="container-fluid">
@@ -36,8 +35,8 @@ export default {
       try {
         const response = await axios.get('user');
 
-        /*await store.dispatch('setUser', user.value);*/
-        await store.dispatch('setUser', response.data.data);
+        /*await store.dispatch('setUser', response.data.data);*/
+        await store.dispatch('User/setUser', response.data.data);
 
         user.value = response.data.data;
       } catch (e) {
