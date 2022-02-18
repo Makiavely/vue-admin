@@ -1,13 +1,13 @@
 <template>
   <Nav :user="user"/>
 
-  <div class="container-fluid">
-    <div class="row">
+  <div className="container-fluid">
+    <div className="row">
       <Menu/>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-        <router-view/>
+        <router-view v-if="user"/>
 
       </main>
     </div>
@@ -20,6 +20,7 @@ import Menu from "@/secure/components/Menu.vue";
 import Nav from "@/secure/components/Nav.vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
+import {useStore} from "vuex";
 
 export default {
   name: "Secure",
@@ -30,12 +31,15 @@ export default {
   setup() {
     const router = useRouter();
     const user = ref(null);
+    const store = useStore();
 
     onMounted(async () => {
       try {
         const response = await axios.get('user');
 
-        /*console.log(response);*/
+        /*await store.dispatch('setUser', user.value);*/
+        await store.dispatch('setUser', response.data.data);
+
         user.value = response.data.data;
       } catch (e) {
         await router.push('/login');
@@ -62,8 +66,8 @@ body {
 }
 
 /*
- * Sidebar
- */
+* Sidebar
+*/
 
 .sidebar {
   position: fixed;
@@ -122,8 +126,8 @@ body {
 }
 
 /*
- * Navbar
- */
+* Navbar
+*/
 
 .navbar-brand {
   padding-top: .75rem;
