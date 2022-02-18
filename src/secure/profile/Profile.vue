@@ -52,9 +52,6 @@ export default {
 
     onMounted(async () => {
       const user = computed(() => store.state.user);
-      /*      const response = await axios.get<any>('user');
-
-           const user: User = response.data.data;*/
 
       firstName.value = user.value.first_name;
       lastName.value = user.value.last_name;
@@ -62,11 +59,14 @@ export default {
     });
 
     const submitInfo = async () => {
-      await axios.put('users/info', {
+      /*await axios.put('users/info', {*/
+      const response = await axios.put('users/info', {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value
       });
+
+      await store.dispatch('setUser', response.data);
     }
 
     const submitPassword = async () => {
