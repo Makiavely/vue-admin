@@ -6,19 +6,22 @@
       <Menu/>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <router-view v-if="user"/>
+<!--        <router-view v-if="user"/>-->
+        <router-view v-if="user?.id"/>
       </main>
     </div>
   </div>
 </template>
 
-<script>
+<!--<script>-->
+<script lang="ts">
 import {onMounted, ref} from "vue";
 import Menu from "@/secure/components/Menu.vue";
 import Nav from "@/secure/components/Nav.vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
+import {User} from "@/classes/user";
 
 export default {
   name: "Secure",
@@ -33,12 +36,22 @@ export default {
 
     onMounted(async () => {
       try {
-        const response = await axios.get('user');
+        const response = await axios.get<any>('user');
 
-        /*await store.dispatch('setUser', response.data.data);*/
-        await store.dispatch('User/setUser', response.data.data);
+        const u = response.data.data;
 
-        user.value = response.data.data;
+        /*await store.dispatch('User/setUser', response.data.data);*/
+        await store.dispatch('User/setUser', new User(
+            u.id,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.role,
+            u.permissions
+        ));
+
+        /*user.value = response.data.data;*/
+        user.value = u;
       } catch (e) {
         await router.push('/login');
       }
