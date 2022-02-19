@@ -29,7 +29,6 @@ import axios from 'axios';
 import {useRoute, useRouter} from "vue-router";
 import ImageUpload from "@/secure/components/ImageUpload.vue";
 import {Product} from "@/classes/product";
-
 export default {
   name: "ProductsEdit",
   components: {ImageUpload},
@@ -40,18 +39,14 @@ export default {
     const price = ref(0);
     const router = useRouter();
     const {params} = useRoute();
-
     onMounted(async () => {
       const response = await axios.get<any>(`products/${params.id}`);
-
       const product: Product = response.data.data;
-
       title.value = product.title;
       description.value = product.description;
       image.value = product.image;
       price.value = product.price;
     });
-
     const submit = async () => {
       await axios.put(`products/${params.id}`, {
         title: title.value,
@@ -61,13 +56,12 @@ export default {
       });
       await router.push('/products');
     }
-
     return {
       title,
       description,
       image,
       price,
-      submit,
+      submit
     }
   }
 }

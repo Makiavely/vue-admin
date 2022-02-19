@@ -25,13 +25,11 @@
 <script>
 import {computed} from 'vue';
 import {useStore} from "vuex";
-
 export default {
   name: "Menu",
   setup() {
     const store = useStore();
     const user = computed(() => store.state.User.user);
-
     return {
       user
     }

@@ -35,14 +35,11 @@
   <Paginator :last-page="lastPage" @page-changed="load($event)"/>
 </template>
 
-
-
 <script>
 import {ref, onMounted, computed} from 'vue';
 import axios from 'axios';
 import Paginator from "@/secure/components/Paginator";
 import {useStore} from "vuex";
-
 export default {
   name: "Orders",
   components: {
@@ -52,18 +49,13 @@ export default {
     const orders = ref([]);
     const lastPage = ref(0);
     const store = useStore();
-
     const user = computed(() => store.state.User.user);
-
     const load = async (page = 1) => {
       const response = await axios.get(`orders?page=${page}`);
-
       orders.value = response.data.data;
       lastPage.value = response.data.meta.last_page;
     }
-
     onMounted(load);
-
     const exportFile = async () => {
       const response = await axios.get('export', {responseType: 'blob'});
       const blob = new Blob([response.data], {type: 'text/csv'});
@@ -73,7 +65,6 @@ export default {
       link.download = 'orders.csv';
       link.click();
     }
-
     return {
       orders,
       lastPage,

@@ -31,7 +31,6 @@
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
-
 export default {
   name: "UsersCreate",
   setup() {
@@ -41,13 +40,10 @@ export default {
     const roleId = ref(0);
     const roles = ref([]);
     const router = useRouter();
-
     onMounted(async () => {
       const response = await axios.get('roles');
-
       roles.value = response.data.data;
     });
-
     const submit = async () => {
       await axios.post('users', {
         first_name: firstName.value,
@@ -55,7 +51,6 @@ export default {
         email: email.value,
         role_id: roleId.value
       });
-
       await router.push('/users');
     }
     return {

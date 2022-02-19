@@ -45,7 +45,6 @@ import axios from 'axios';
 import {Entity} from "@/interfaces/entity";
 import Paginator from "@/secure/components/Paginator.vue";
 import {useStore} from "vuex";
-
 export default {
   name: "Products",
   components: {Paginator},
@@ -53,32 +52,25 @@ export default {
     const products = ref([]);
     const lastPage = ref(0);
     const store = useStore();
-
     const user = computed(() => store.state.User.user);
-
     const load = async (page = 1) => {
       const response = await axios.get<any>(`products?page=${page}`);
-
       products.value = response.data.data;
       lastPage.value = response.data.meta.last_page;
     }
-
     onMounted(load);
-
     const del = async (id: number) => {
       if (confirm('Are you sure you want to delete this record?')) {
         await axios.delete(`products/${id}`);
-
         products.value = products.value.filter((e: Entity) => e.id !== id);
       }
     }
-
     return {
       products,
       lastPage,
       user,
       del,
-      load,
+      load
     }
   }
 }

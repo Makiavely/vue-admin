@@ -36,29 +36,22 @@ import {ref, onMounted, computed} from 'vue';
 import axios from 'axios';
 import {Entity} from "@/interfaces/entity";
 import {useStore} from "vuex";
-
 export default {
   name: "Roles",
   setup() {
     const roles = ref([]);
     const store = useStore();
-
     const user = computed(() => store.state.User.user);
-
     onMounted(async () => {
       const response = await axios.get<any>('roles');
-
       roles.value = response.data.data;
     });
-
     const del = async (id: number) => {
       if (confirm('Are you sure you want to delete this record?')) {
         await axios.delete(`roles/${id}`);
-
         roles.value = roles.value.filter((e: Entity) => e.id !== id);
       }
     }
-
     return {
       roles,
       user,
@@ -66,5 +59,4 @@ export default {
     }
   }
 }
-
 </script>

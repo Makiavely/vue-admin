@@ -39,8 +39,6 @@ import {ref, onMounted, computed} from 'vue';
 import axios from 'axios';
 import {User} from "@/classes/user";
 import {useStore} from "vuex";
-
-
 export default {
   name: "Profile",
   setup() {
@@ -50,30 +48,19 @@ export default {
     const password = ref('');
     const passwordConfirm = ref('');
     const store = useStore();
-
     onMounted(async () => {
-      /*const user = computed(() => store.state.user);*/
       const user = computed(() => store.state.User.user);
-
       firstName.value = user.value.first_name;
       lastName.value = user.value.last_name;
       email.value = user.value.email;
-
-      console.log(user.value.first_name);
     });
-
     const submitInfo = async () => {
-      /*await axios.put('users/info', {*/
       const response = await axios.put('users/info', {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value
       });
-
       const u: User = response.data;
-
-      /*await store.dispatch('setUser', response.data);*/
-      /*await store.dispatch('User/setUser', response.data);*/
       await store.dispatch('User/setUser', new User(
           u.id,
           u.first_name,
@@ -83,13 +70,11 @@ export default {
           u.permissions
       ));
     }
-
     const submitPassword = async () => {
       await axios.put('users/password', {
         password: password.value,
         password_confirm: passwordConfirm.value
       });
-
       password.value = '';
       passwordConfirm.value = '';
     }

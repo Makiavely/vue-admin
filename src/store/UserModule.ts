@@ -4,7 +4,6 @@ import {Commit} from "vuex";
 export default {
     namespaced: true,
     state: {
-        /*user: new User()*/
         user: new User()
     },
     mutations: {

@@ -32,7 +32,6 @@ import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import {useRoute, useRouter} from "vue-router";
 import {User} from "@/classes/user";
-
 export default {
   name: "UsersEdit",
   setup() {
@@ -43,22 +42,16 @@ export default {
     const roles = ref([]);
     const router = useRouter();
     const {params} = useRoute();
-
     onMounted(async () => {
       const response = await axios.get<any>('roles');
-
       roles.value = response.data.data;
-
       const userCall = await axios.get<any>(`users/${params.id}`);
-
       const user: User = userCall.data.data;
-
       firstName.value = user.first_name;
       lastName.value = user.last_name;
       email.value = user.email;
       roleId.value = user.role.id;
     });
-
     const submit = async () => {
       await axios.put(`users/${params.id}`, {
         first_name: firstName.value,
@@ -66,7 +59,6 @@ export default {
         email: email.value,
         role_id: roleId.value
       });
-
       await router.push('/users');
     }
     return {
