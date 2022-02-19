@@ -36,40 +36,29 @@ export default {
     const selected = ref([] as number[]);
     const router = useRouter();
     const {params} = useRoute();
-
     onMounted(async () => {
       const response = await axios.get<any>('permissions');
-
       permissions.value = response.data.data;
-
       const roleCall = await axios.get<any>(`roles/${params.id}`);
-
       const role: Role = roleCall.data.data;
-
       name.value = role.name;
       selected.value = role.permissions.map(p => p.id);
     });
-
     const select = (id: number, checked: boolean) => {
       if (checked) {
         selected.value = [...selected.value, id];
         return;
       }
-
       selected.value = selected.value.filter(s => s !== id);
     }
-
     const submit = async () => {
       await axios.put(`roles/${params.id}`, {
         name: name.value,
         permissions: selected.value
       });
-
       await router.push('/roles');
     }
-
     const checked = (id: number) => selected.value.some(s => s === id)
-
     return {
       name,
       permissions,

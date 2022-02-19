@@ -1,21 +1,22 @@
 <template>
-  <form class="form-signin" @submit.prevent="submit">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <form className="form-signin" @submit.prevent="submit">
+    <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
 
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus
+    <label htmlFor="inputEmail" className="sr-only">Email address</label>
+    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus
            v-model="email">
 
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required v-model="password">
+    <label htmlFor="inputPassword" className="sr-only">Password</label>
+    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required
+           v-model="password">
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
   </form>
 </template>
 
 <script>
 import {ref} from 'vue';
-import axios from "axios";
+import axios from 'axios';
 import {useRouter} from "vue-router";
 
 export default {
@@ -24,17 +25,12 @@ export default {
     const email = ref('');
     const password = ref('');
     const router = useRouter();
-
     const submit = async () => {
-      const response = await axios.post('login', {
+      await axios.post('login', {
         email: email.value,
         password: password.value,
+        scope: 'admin'
       });
-
-      localStorage.setItem('token', response.data.token);
-      /*axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;*/
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-
       await router.push('/');
     }
     return {
@@ -53,7 +49,9 @@ body {
 }
 
 body {
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-align: center;
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -71,7 +69,15 @@ body {
   font-weight: 400;
 }
 
-.form-signin .form-floating:focus-within {
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-signin .form-control:focus {
   z-index: 2;
 }
 

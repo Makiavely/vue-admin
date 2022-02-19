@@ -26,7 +26,6 @@
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
-
 export default {
   name: "RolesCreate",
   setup() {
@@ -34,32 +33,24 @@ export default {
     const permissions = ref([]);
     const selected = ref([] as number[]);
     const router = useRouter();
-
     onMounted(async () => {
       const response = await axios.get<any>('permissions');
-
       permissions.value = response.data.data;
     });
-
     const select = (id: number, checked: boolean) => {
       if (checked) {
         selected.value = [...selected.value, id];
         return;
       }
-
       selected.value = selected.value.filter(s => s !== id);
     }
-
     const submit = async () => {
-      //console.log(selected.value);
       await axios.post('roles', {
         name: name.value,
         permissions: selected.value
       });
-
       await router.push('/roles');
     }
-
     return {
       name,
       permissions,

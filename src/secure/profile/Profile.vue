@@ -35,10 +35,10 @@
 </template>
 
 <script lang="ts">
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import axios from 'axios';
 import {User} from "@/classes/user";
-
+import {useStore} from "vuex";
 export default {
   name: "Profile",
   setup() {
@@ -47,31 +47,34 @@ export default {
     const email = ref('');
     const password = ref('');
     const passwordConfirm = ref('');
-
+    const store = useStore();
     onMounted(async () => {
-      const response = await axios.get<any>('user');
-
-      const user: User = response.data.data;
-
-      firstName.value = user.first_name;
-      lastName.value = user.last_name;
-      email.value = user.email;
+      const user = computed(() => store.state.User.user);
+      firstName.value = user.value.first_name;
+      lastName.value = user.value.last_name;
+      email.value = user.value.email;
     });
-
     const submitInfo = async () => {
-      await axios.put('users/info', {
+      const response = await axios.put('users/info', {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value
       });
+      const u: User = response.data;
+      await store.dispatch('User/setUser', new User(
+          u.id,
+          u.first_name,
+          u.last_name,
+          u.email,
+          u.role,
+          u.permissions
+      ));
     }
-
     const submitPassword = async () => {
       await axios.put('users/password', {
         password: password.value,
         password_confirm: passwordConfirm.value
       });
-
       password.value = '';
       passwordConfirm.value = '';
     }

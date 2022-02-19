@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0" v-if="user.canEdit('orders')">
       <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" @click="exportFile">Export</a>
     </div>
   </div>
@@ -35,13 +35,11 @@
   <Paginator :last-page="lastPage" @page-changed="load($event)"/>
 </template>
 
-
-
 <script>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import axios from 'axios';
 import Paginator from "@/secure/components/Paginator";
-
+import {useStore} from "vuex";
 export default {
   name: "Orders",
   components: {
@@ -50,16 +48,14 @@ export default {
   setup() {
     const orders = ref([]);
     const lastPage = ref(0);
-
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
     const load = async (page = 1) => {
       const response = await axios.get(`orders?page=${page}`);
-
       orders.value = response.data.data;
       lastPage.value = response.data.meta.last_page;
     }
-
     onMounted(load);
-
     const exportFile = async () => {
       const response = await axios.get('export', {responseType: 'blob'});
       const blob = new Blob([response.data], {type: 'text/csv'});
@@ -69,10 +65,10 @@ export default {
       link.download = 'orders.csv';
       link.click();
     }
-
     return {
       orders,
       lastPage,
+      user,
       load,
       exportFile
     }
